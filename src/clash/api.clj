@@ -29,8 +29,7 @@
 (defn api-get [url]
   (let [options {:headers {"Accept" "application/json"
                            "authorization" (str "Bearer " token)}
-                 ;;:proxy-url (env :fixie-url)}
-                 }
+                 :proxy-url (env :fixie-url)}
         resp @(http/get url options)]
     (json/read-str (:body resp))))
 

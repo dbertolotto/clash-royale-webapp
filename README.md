@@ -1,6 +1,7 @@
 # clash
 
-Application based on the Clash Royale API to check clan members, wars and war logs.
+Application based on the [Clash Royale API](https://developer.clashroyale.com/) to check clan members, wars and war logs.
+Hardwired to my current clan.
 
 ## Installation
 
@@ -12,9 +13,10 @@ FIXME: explanation
 
     $ java -jar clash-0.1.0-standalone.jar [args]
 
-## Options
+## Variables
 
-FIXME: listing of options this app accepts.
+You need the API token set up in the variable ```API_TOKEN``` for local development. You can save it in the ```.env``` file and ```source``` it as needed.
+If you have a proxy you can set it with the variable ```FIXIE_URL```.
 
 ## Heroku
 
