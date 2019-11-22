@@ -3,7 +3,8 @@
   (:require [org.httpkit.server :as server]
             [compojure.core :refer :all]
             [compojure.route :as route]
-            [clash.render :as render]))
+            [clash.render :as render]
+            [environ.core :refer [env]]))
 
 
 (defn members-handler [req]
@@ -51,6 +52,6 @@
 (defn -main
   "This is our app's entry point"
   [& args]
-  (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
+  (let [port (Integer/parseInt (or (env :port) "8080"))]
   (server/run-server #'app-routes {:port port})
   (println (str "Running webserver at http:/127.0.0.1:" port "/"))))

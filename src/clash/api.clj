@@ -3,14 +3,15 @@
   (:require [org.httpkit.client :as http]
             [clojure.data.json :as json]
             [clojure.string :as cljstr]
-            [ring.util.codec :as rcod]))
+            [ring.util.codec :as rcod]
+            [environ.core :refer [env]]))
 
 (def my-clan "#G2RYVP")
 (def my-player "#RUGCQJ9")
 
 (def server "https://api.clashroyale.com")
 (def version "v1")
-(def token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImI0YThlZmZjLWRlOGUtNGRiNS1iMDc4LTgyMjVmNTE2ZDRkNCIsImlhdCI6MTU3NDQxMDc4Mywic3ViIjoiZGV2ZWxvcGVyL2E5ZDAxMWI3LWFmMDYtNzU3ZS04OWY5LTJjMjQ1OTZlMjQxNyIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIxNzguMTk3LjIzOS4xMzQiXSwidHlwZSI6ImNsaWVudCJ9XX0.LF5metIrb7HaRLwG6hLt97vy2Gpu8PSjw2HNwhNGQtsDy0B1zzjXkCMpN2jXdYSPd1VQszwvNJLrFerzYt0YuQ")
+(def token (env :api-token))
 
 
 ;; core functions
@@ -27,7 +28,9 @@
 
 (defn api-get [url]
   (let [options {:headers {"Accept" "application/json"
-                           "authorization" (str "Bearer " token)}}
+                           "authorization" (str "Bearer " token)}
+                 ;;:proxy-url (env :fixie-url)}
+                 }
         resp @(http/get url options)]
     (json/read-str (:body resp))))
 

@@ -10,7 +10,7 @@
   "Convert special datetime format"
   [s]
   (jt/format "yyyy-MM-dd HH:mm:ss"
-   (jt/local-date-time "yyyyMMdd'T'HHmmss.SSS'Z'" s)))
+             (jt/local-date-time "yyyyMMdd'T'HHmmss.SSS'Z'" s)))
 
 ;; json rendering
 
@@ -80,7 +80,8 @@
 (defn get-war-state [data]
   (let [state (:state data)]
     (cond
-      (= state "collectionDay") (str "Collection Day - " (get-datetime (:collectionEndTime data)))
+      (= state "collectionDay") (str "Collection Day - Ends on " (get-datetime (:collectionEndTime data)))
+      (= state "warDay") (str "War Day - Ends on " (get-datetime (:warEndTime data)))
       :default state)))
 
 (defn war-participant-title []

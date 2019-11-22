@@ -1,6 +1,6 @@
 # clash
 
-FIXME: description
+Application based on the Clash Royale API to check clan members, wars and war logs.
 
 ## Installation
 
@@ -16,6 +16,14 @@ FIXME: explanation
 
 FIXME: listing of options this app accepts.
 
+## Heroku
+
+* Load repo to Heroku and start app ```git push heroku master```
+* See variables ```heroku config 2>/dev/null```
+* Ensure one app is running ```heroku ps:scale web=1```
+* Check logs ```heroku logs --tail```
+See also [the heroku website](https://devcenter.heroku.com/articles/getting-started-with-clojure)
+
 ## Examples
 
 ...
@@ -30,7 +38,7 @@ FIXME: listing of options this app accepts.
 
 ## License
 
-Copyright © 2019 FIXME
+Copyright © 2019 Davide Bertolotto
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
