@@ -11,6 +11,7 @@
                  [hiccup "1.0.5"]
                  [org.clojure/data.json "0.2.7"]
                  [clojure.java-time "0.3.2"]]
+  :min-lein-version "2.0.0" ;; to use lein >= 2.0 on heroku
   ;;:main ^:skip-aot clash.core
   :uberjar-name "clash-standalone.jar"
   ;;:profiles {:uberjar {:aot :all}}
