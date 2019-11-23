@@ -8,3 +8,18 @@ table, th, td {
     padding: 5px;
     border: 1px solid black;
 }
+
+tr.ok {
+    background-color: white;
+    color: black;
+}
+
+tr.warn {
+    background-color: orange;
+    color: black;
+}
+
+tr.bad {
+    background-color: red;
+    color: white;
+}

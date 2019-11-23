@@ -15,18 +15,31 @@
   (jt/format "yyyy-MM-dd HH:mm:ss"
              (jt/local-date-time "yyyyMMdd'T'HHmmss.SSS'Z'" s)))
 
-;; json rendering
+;;;; json rendering
+
+(defn render-json [fun]
+  (with-out-str (json/pprint (fun))))
 
 (defn render-members-json []
-  (with-out-str (json/pprint (api/my-clan-members))))
+  (render-json api/my-clan-members))
 
 (defn render-war-json []
-  (with-out-str (json/pprint (api/my-clan-war))))
+  (render-json api/my-clan-war))
 
 (defn render-warlog-json []
-  (with-out-str (json/pprint (api/my-clan-warlog))))
+  (render-json api/my-clan-warlog))
 
-;; html rendering
+;;;; html rendering
+
+;; generic helpers
+
+(defn uuid [] (str (java.util.UUID/randomUUID)))
+
+(defn header [title]
+  [:header [:title title] (hu/include-css "style.css") (hu/include-js "sortable.js")])
+
+(defn viewport []
+  [:meta {"name" "viewport" "content" "width=device-width, initial-scale=1.0"}])
 
 ;; members
 
@@ -43,6 +56,7 @@
                       :clanChestPoints "Clan Chest Pts."])
 (def member-keys (take-nth 2 member-mapping))
 (def member-map (apply hash-map member-mapping))
+
 (def member-conv {:lastSeen get-datetime
                   :arena :name})
 (defn convert [k elem]
@@ -51,21 +65,26 @@
       (cf elem)
       elem)))
 
-(defn member-title []
-  [:tr (map (fn [k] [:th (k member-map)]) member-keys)])
+(defn member-on-click-action [k tableId]
+  (str "sortTable(" (.indexOf member-keys k) "," tableId ")"))
+
+(defn member-title [tableId]
+  [:tr (map (fn [k] [:th {"onclick" (member-on-click-action k tableId)} (k member-map)]) member-keys)])
 
 (defn member [part]
   [:tr (map (fn [k] [:td (convert k (k part))]) member-keys)])
 
 (defn render-members []
-  (let [data (:items (walk/keywordize-keys (api/my-clan-members)))]
+  (let [data (:items (walk/keywordize-keys (api/my-clan-members)))
+        tableId 0]
     (hu/html5
-     [:header [:title "Members"] (hu/include-css "style.css")]
+     (header "Members")
      [:body
+      (viewport)
       [:h1 "Members"]
       [:div {"style" "overflow-x:auto;"} ; horiz. scroll bar for table
-       [:table
-        (member-title)
+       [:table {"id" tableId}
+        (member-title tableId)
         (map member data)]]])))
 
 ;; war
@@ -87,50 +106,63 @@
       (= state "warDay") (str "War Day - Ends on " (get-datetime (:warEndTime data)))
       :default state)))
 
-(defn war-participant-title []
-  [:tr (map (fn [k] [:th (k war-participant-map)]) war-participant-keys)])
+(defn war-on-click-action [k tableId]
+  (str "sortTable(" (.indexOf war-participant-keys k) "," tableId ")"))
+
+(defn war-participant-title [tableId]
+  [:tr (map (fn [k] [:th {"onclick" (war-on-click-action k tableId)} (k war-participant-map)])
+            war-participant-keys)])
 
 (defn war-participant [part]
-  [:tr (map (fn [k] [:td (k part)]) war-participant-keys)])
+  (let [warn (< (:collectionDayBattlesPlayed part) 3)
+        bad (< (:battlesPlayed part) (:numberOfBattles part))
+        rowclass (if bad "bad" (if warn "warn" "ok"))]
+    [:tr {"class" rowclass} (map (fn [k] [:td (k part)]) war-participant-keys)]))
 
 (defn render-war []
   (let [data (walk/keywordize-keys (api/my-clan-war))
-        war-state (get-war-state data)]
+        war-state (get-war-state data)
+        tableId 0]
     (hu/html5
-     [:header [:title "Current War"] (hu/include-css "style.css")]
+     (header "Current War")
      [:body
+      (viewport)
       [:div {"style" "overflow-x:auto;"} ; horiz. scroll bar for table
-       [:table
+       [:table {"id" tableId}
         [:h1 "Current War"]
         [:h2 war-state]
-        (war-participant-title)
+        (war-participant-title tableId)
         (map war-participant (:participants data))]]])))
 
 ;; warlog (participant mapping is the same as the war)
 
-(defn render-one-log [data]
+(defn render-one-log [idx data]
   (let [war-season (:seasonId data)
-        war-time (get-datetime (:createdDate data))]
+        war-time (get-datetime (:createdDate data))
+        tableId idx]
     (list
      [:h2 (str "Season " war-season " - War Creation Time: " war-time)]
      [:div {"style" "overflow-x:auto;"} ; horiz. scroll bar for table
-      [:table
-       (war-participant-title)
+      [:table {"id" tableId}
+       (war-participant-title tableId)
        (map war-participant (:participants data))]])))
 
 (defn render-warlog []
   (let [logs (:items (walk/keywordize-keys (api/my-clan-warlog)))]
     (hu/html5
-     [:header [:title "War Log"] (hu/include-css "style.css")]
+     (header "War Log")
      [:body
+      (viewport)
       [:h1 "War Log"]
-      (map render-one-log logs)])))
+      (map-indexed render-one-log logs)])))
 
 ;; home
+
 (defn render-home []
   (hu/html5
-   [:header [:title "Home - CR Stats"] (hu/include-css "style.css")]
+   (header "Home - CR Stats")
    [:body
+    (viewport)
     [:h1 "Home - CR Stats"]
     [:ul
      [:li [:a {:href (str base-url "/members")} "Members"]]
@@ -141,6 +173,7 @@
 
 (defn render-not-found []
   (hu/html5
-   [:header [:title "Page Not Found"] (hu/include-css "style.css")]
+   (header "Page Not Found")
    [:body
+    (viewport)
     [:h1 "Page Not Found"]]))

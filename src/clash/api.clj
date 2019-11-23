@@ -85,4 +85,4 @@
 (defn my-clan-war []
   (clan-war my-clan))
 (defn my-clan-warlog []
-  (clan-warlog my-clan 5))
+  (clan-warlog my-clan 6))

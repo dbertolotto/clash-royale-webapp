@@ -7,45 +7,37 @@
             [environ.core :refer [env]]))
 
 
+(defn handler [status header-type render-fun]
+  {:status  status
+   :headers {"Content-Type" (str (case header-type
+                                   :html "text/html"
+                                   :json "text/json")
+                                 "; charset=utf-8")}
+   :body    (render-fun)})
+
 (defn home-handler [req]
-  {:status  200
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    (render/render-home)})
+  (handler 200 :html render/render-home))
 
 (defn members-handler [req]
-  {:status  200
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    (render/render-members)})
+  (handler 200 :html render/render-members))
 
 (defn war-handler [req]
-  {:status  200
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    (render/render-war)})
+  (handler 200 :html render/render-war))
 
 (defn warlog-handler [req]
-  {:status  200
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    (render/render-warlog)})
+  (handler 200 :html render/render-warlog))
 
 (defn members-json-handler [req]
-  {:status  200
-   :headers {"Content-Type" "text/json; charset=utf-8"}
-   :body    (render/render-members-json)})
+  (handler 200 :json render/render-members-json))
 
 (defn war-json-handler [req]
-  {:status  200
-   :headers {"Content-Type" "text/json; charset=utf-8"}
-   :body    (render/render-war-json)})
+  (handler 200 :json render/render-war-json))
 
 (defn warlog-json-handler [req]
-  {:status  200
-   :headers {"Content-Type" "text/json; charset=utf-8"}
-   :body    (render/render-warlog-json)})
+  (handler 200 :json render/render-warlog-json))
 
 (defn not-found-handler [req]
-  {:status  404
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    (render/render-not-found)})
+  (handler 404 :html render/render-not-found))
 
 (defroutes app-routes
   (GET "/" [] home-handler)
