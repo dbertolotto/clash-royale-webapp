@@ -3,20 +3,11 @@
 Application based on the [Clash Royale API](https://developer.clashroyale.com/) to check clan members, wars and war logs.
 Hardwired to my current clan.
 
-## Installation
-
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar clash-0.1.0-standalone.jar [args]
-
 ## Variables
 
-You need the API token set up in the variable ```API_TOKEN``` for local development. You can save it in the ```env``` file and ```source``` it as needed.
+You need the API token set up in the variable ```API_TOKEN``` for local development. You can save it in the ```.env``` file and ```source``` it as needed.
 If you have a proxy you can set it with the variable ```FIXIE_URL```.
+You also need a ```BASE_URL``` for the links in the pages.
 
 ## Heroku
 
@@ -25,18 +16,6 @@ If you have a proxy you can set it with the variable ```FIXIE_URL```.
 * Ensure one app is running ```heroku ps:scale web=1```
 * Check logs ```heroku logs --tail```
 See also [the heroku website](https://devcenter.heroku.com/articles/getting-started-with-clojure)
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
 
 ## License
 
