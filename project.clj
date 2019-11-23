@@ -14,8 +14,7 @@
                  [org.clojure/data.codec "0.1.1"]
                  [environ "1.1.0"]]
   :min-lein-version "2.0.0" ;; to use lein >= 2.0 on heroku
-  :main clash.core
+  :main ^:skip-aot clash.core
   :uberjar-name "clash-standalone.jar"
-  ;;:profiles {:uberjar {:aot :all}}
-  :profiles {:production {:env {:production true}}}
-  )
+  :profiles {:production {:env {:production true}}
+             :uberjar {:aot :all}})
