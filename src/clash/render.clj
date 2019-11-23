@@ -31,6 +31,15 @@
 
 ;;;; html rendering
 
+;; topnav
+
+(defn topnav [active]
+  [:div {:class "topnav"}
+    [:a {:class (if (= active :home) "active" "normal") :href (str base-url "/")} "Home"]
+    [:a {:class (if (= active :members) "active" "normal") :href (str base-url "/members")} "Members"]
+    [:a {:class (if (= active :war) "active" "normal") :href (str base-url "/war")} "War"]
+    [:a {:class (if (= active :warlog) "active" "normal") :href (str base-url "/warlog")} "Warlogs"]])
+
 ;; generic helpers
 
 (defn uuid [] (str (java.util.UUID/randomUUID)))
@@ -81,6 +90,7 @@
      (header "Members")
      [:body
       (viewport)
+      (topnav :members)
       [:h1 "Members"]
       [:div {"style" "overflow-x:auto;"} ; horiz. scroll bar for table
        [:table {"id" tableId}
@@ -127,6 +137,7 @@
      (header "Current War")
      [:body
       (viewport)
+      (topnav :war)
       [:div {"style" "overflow-x:auto;"} ; horiz. scroll bar for table
        [:table {"id" tableId}
         [:h1 "Current War"]
@@ -153,6 +164,7 @@
      (header "War Log")
      [:body
       (viewport)
+      (topnav :warlog)
       [:h1 "War Log"]
       (map-indexed render-one-log logs)])))
 
@@ -163,11 +175,8 @@
    (header "Home - CR Stats")
    [:body
     (viewport)
-    [:h1 "Home - CR Stats"]
-    [:ul
-     [:li [:a {:href (str base-url "/members")} "Members"]]
-     [:li [:a {:href (str base-url "/war")} "Current War"]]
-     [:li [:a {:href (str base-url "/warlog")} "War Logs"]]]]))
+    (topnav :home)
+    [:h1 "Home - CR Stats"]]))
 
 ;; not found
 
