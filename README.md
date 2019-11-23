@@ -15,7 +15,7 @@ FIXME: explanation
 
 ## Variables
 
-You need the API token set up in the variable ```API_TOKEN``` for local development. You can save it in the ```.env``` file and ```source``` it as needed.
+You need the API token set up in the variable ```API_TOKEN``` for local development. You can save it in the ```env``` file and ```source``` it as needed.
 If you have a proxy you can set it with the variable ```FIXIE_URL```.
 
 ## Heroku

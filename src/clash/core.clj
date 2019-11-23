@@ -7,37 +7,48 @@
             [environ.core :refer [env]]))
 
 
+(defn home-handler [req]
+  {:status  200
+   :headers {"Content-Type" "text/html; charset=utf-8"}
+   :body    (render/render-home)})
+
 (defn members-handler [req]
   {:status  200
-   :headers {"Content-Type" "text/html"}
+   :headers {"Content-Type" "text/html; charset=utf-8"}
    :body    (render/render-members)})
 
 (defn war-handler [req]
   {:status  200
-   :headers {"Content-Type" "text/html"}
+   :headers {"Content-Type" "text/html; charset=utf-8"}
    :body    (render/render-war)})
 
 (defn warlog-handler [req]
   {:status  200
-   :headers {"Content-Type" "text/html"}
+   :headers {"Content-Type" "text/html; charset=utf-8"}
    :body    (render/render-warlog)})
 
 (defn members-json-handler [req]
   {:status  200
-   :headers {"Content-Type" "text/json"}
+   :headers {"Content-Type" "text/json; charset=utf-8"}
    :body    (render/render-members-json)})
 
 (defn war-json-handler [req]
   {:status  200
-   :headers {"Content-Type" "text/json"}
+   :headers {"Content-Type" "text/json; charset=utf-8"}
    :body    (render/render-war-json)})
 
 (defn warlog-json-handler [req]
   {:status  200
-   :headers {"Content-Type" "text/json"}
+   :headers {"Content-Type" "text/json; charset=utf-8"}
    :body    (render/render-warlog-json)})
 
+(defn not-found-handler [req]
+  {:status  404
+   :headers {"Content-Type" "text/html; charset=utf-8"}
+   :body    (render/render-not-found)})
+
 (defroutes app-routes
+  (GET "/" [] home-handler)
   (GET "/members" [] members-handler)
   (GET "/war" [] war-handler)
   (GET "/warlog" [] warlog-handler)
@@ -47,7 +58,7 @@
   ;; special route for serving static files like css
   ;; default root directory is resources/public/
   (route/resources "/")
-  (route/not-found "Page not found"))
+  (route/not-found not-found-handler))
 
 (defn -main
   "This is our app's entry point"

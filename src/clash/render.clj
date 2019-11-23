@@ -4,7 +4,10 @@
             [clojure.data.json :as json]
             [clojure.walk :as walk]
             [java-time :as jt]
-            [hiccup.page :as hu]))
+            [hiccup.page :as hu]
+            [environ.core :refer [env]]))
+
+(def base-url (env :base-url))
 
 (defn get-datetime
   "Convert special datetime format"
@@ -122,3 +125,22 @@
      [:body
       [:h1 "War Log"]
       (map render-one-log logs)])))
+
+;; home
+(defn render-home []
+  (hu/html5
+   [:header [:title "Home - CR Stats"] (hu/include-css "style.css")]
+   [:body
+    [:h1 "Home - CR Stats"]
+    [:ul
+     [:li [:a {:href (str base-url "/members")} "Members"]]
+     [:li [:a {:href (str base-url "/war")} "Current War"]]
+     [:li [:a {:href (str base-url "/warlog")} "War Logs"]]]]))
+
+;; not found
+
+(defn render-not-found []
+  (hu/html5
+   [:header [:title "Page Not Found"] (hu/include-css "style.css")]
+   [:body
+    [:h1 "Page Not Found"]]))
