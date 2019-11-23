@@ -1,8 +1,8 @@
 # clash
 
-Application based on the [Clash Royale API](https://developer.clashroyale.com/) to check clan members, wars and war logs.
+Application based on the [Clash Royale API](https://developer.clashroyale.com) to check clan members, wars and war logs.
 Hardwired to my current clan.
-
+You can use it [here](https://my-cr-webapp.herokuapp.com)
 ## Variables
 
 You need some variable for set up. You can save them in the `.env` file and `source` it as needed.
