@@ -29,7 +29,8 @@
 
 ;; proxy
 (def proxy-url (env :fixie-url))
-(def proxy-url-match (re-matches #"(http[s]?://)(.*?):(.*?)@(.*?):(\d+)" proxy-url))
+(def proxy-url-match (if proxy-url
+                       (re-matches #"(http[s]?://)(.*?):(.*?)@(.*?):(\d+)" proxy-url)))
 (def proxy-map (if proxy-url-match
                  {:auth (str-to-b64-str (str (proxy-url-match 2) ":" (proxy-url-match 3)))
                   :host (str (proxy-url-match 1) (proxy-url-match 4))
